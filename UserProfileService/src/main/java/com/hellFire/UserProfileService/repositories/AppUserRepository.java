@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
+    AppUser findByUsernameAndDeleted(String username, Boolean deleted);
 }

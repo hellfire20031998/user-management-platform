@@ -2,8 +2,12 @@ package com.hellFire.UserProfileService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@Data
 @Table(name = "user_profile")
 public class UserProfile extends BaseEntity {
     @Id
