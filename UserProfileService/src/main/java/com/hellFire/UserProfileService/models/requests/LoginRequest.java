@@ -1,15 +1,17 @@
 package com.hellFire.UserProfileService.models.requests;
 
-import jakarta.annotation.Nonnull;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import tools.jackson.databind.PropertyNamingStrategies;
-import tools.jackson.databind.annotation.JsonNaming;
 
 @Data
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class) // <--- Adds naming strategy
 public class LoginRequest {
-    @Nonnull
+
+    @NotBlank(message = "Username is required")
     private String username;
-    @Nonnull
+
+    @NotBlank(message = "Password is required")
     private String password;
 }

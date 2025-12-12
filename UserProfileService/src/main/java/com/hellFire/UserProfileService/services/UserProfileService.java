@@ -9,6 +9,7 @@ import com.hellFire.UserProfileService.repositories.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,7 +27,12 @@ public class UserProfileService {
     }
 
     public UserProfileDto createUserProfile(AppUser appUser, SignUpRequest request) {
-        UserProfile userProfile = userProfileMapper.toEntity(request);
+        UserProfile userProfile;
+        if(Objects.isNull(request)) {
+            userProfile = new UserProfile();
+        }else {
+            userProfile = userProfileMapper.toEntity(request);
+        }
         userProfile.setAppUser(appUser);
         return userProfileMapper.toDto(userProfileRepository.save(userProfile));
     }

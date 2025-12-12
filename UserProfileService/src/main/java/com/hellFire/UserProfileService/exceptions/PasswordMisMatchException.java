@@ -1,8 +1,8 @@
 package com.hellFire.UserProfileService.exceptions;
 
-public class PasswordMisMatchException extends RuntimeException{
+public class PasswordMisMatchException extends Exception{
 
-    public PasswordMisMatchException() {
-        super("Invalid password.");
+    public PasswordMisMatchException(String message) {
+        super(message);
     }
 }

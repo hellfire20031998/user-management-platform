@@ -5,6 +5,7 @@ import com.hellFire.UserProfileService.exceptions.UserAlreadyExists;
 import com.hellFire.UserProfileService.exceptions.UserNotFoundException;
 import com.hellFire.UserProfileService.models.AppUser;
 import com.hellFire.UserProfileService.models.dtos.UserProfileDto;
+import com.hellFire.UserProfileService.models.requests.SignUpRequest;
 import com.hellFire.UserProfileService.models.responses.LoginResponse;
 import com.hellFire.UserProfileService.repositories.AppUserRepository;
 import jakarta.transaction.Transactional;
@@ -31,22 +32,22 @@ public class AuthService {
                 UserProfileDto userProfileDto = userProfileService.getUserProfileByAppUserId(appUser.getId());
                 return new LoginResponse("",userProfileDto);
             }else{
-                throw new PasswordMisMatchException();
+                throw new PasswordMisMatchException("Password doesn't match");
             }
         }else{
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("User not found with username: " + username);
         }
     }
 
     @Transactional
-    public LoginResponse signUp(String username, String password) throws UserNotFoundException, PasswordMisMatchException {
-        AppUser appUser = appUserRepository.findByUsernameAndDeleted(username, false);
+    public LoginResponse signUp(SignUpRequest signUpRequest) throws UserNotFoundException, PasswordMisMatchException, UserAlreadyExists {
+        AppUser appUser = appUserRepository.findByUsernameAndDeleted(signUpRequest.getUsername(), false);
         if (appUser != null) {
-            throw new UserAlreadyExists("User already exists with username: " + username);
+            throw new UserAlreadyExists("User already exists with username: " + signUpRequest.getUsername());
         }else{
-            appUser = new AppUser(null,username, passwordEncoder.encode(password));
+            appUser = new AppUser(null,signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()));
             AppUser savedAppUser = appUserRepository.save(appUser);
-            UserProfileDto userProfileDto = userProfileService.createUserProfile(savedAppUser, null);
+            UserProfileDto userProfileDto = userProfileService.createUserProfile(savedAppUser, signUpRequest);
             return new LoginResponse("",userProfileDto);
         }
     }

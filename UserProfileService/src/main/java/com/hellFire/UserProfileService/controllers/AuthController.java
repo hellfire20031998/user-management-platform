@@ -1,10 +1,13 @@
 package com.hellFire.UserProfileService.controllers;
 
+import com.hellFire.UserProfileService.exceptions.PasswordMisMatchException;
+import com.hellFire.UserProfileService.exceptions.UserAlreadyExists;
+import com.hellFire.UserProfileService.exceptions.UserNotFoundException;
 import com.hellFire.UserProfileService.models.requests.LoginRequest;
 import com.hellFire.UserProfileService.models.requests.SignUpRequest;
+import com.hellFire.UserProfileService.models.responses.LoginResponse;
 import com.hellFire.UserProfileService.services.AuthService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +26,43 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @NotNull @RequestBody LoginRequest loginRequest) {
-        return new ResponseEntity<>(authService.login(loginRequest.getUsername(), loginRequest.getPassword()), HttpStatus.OK);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        try {
+            LoginResponse response = authService.login(
+                    loginRequest.getUsername(),
+                    loginRequest.getPassword()
+            );
+            return ResponseEntity.ok(response);
+
+        } catch (UserNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+
+        } catch (PasswordMisMatchException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ex.getMessage());
+
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong. Please try again.");
+        }
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@Valid @NotNull @RequestBody SignUpRequest signUpRequest) {
-        return new ResponseEntity<>(authService.signUp(signUpRequest.getUsername(), signUpRequest.getPassword()), HttpStatus.OK);
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        try {
+            return ResponseEntity.ok(
+                    authService.signUp(signUpRequest)
+            );
+
+        } catch (UserAlreadyExists ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+
+        }
+        catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Something went wrong. Please try again.");
+        }
     }
+
 }
