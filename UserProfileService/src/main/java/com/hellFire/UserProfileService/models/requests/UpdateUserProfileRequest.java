@@ -1,18 +1,16 @@
-package com.hellFire.UserProfileService.models.dtos;
+package com.hellFire.UserProfileService.models.requests;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserProfileDto extends BaseEntityDto {
-    private Long id;
+public class UpdateUserProfileRequest {
+    private String username;
+    private String password;
     private String firstName;
     private String lastName;
-    private String username;
     private String email;
     private String phone;
     private String profilePicture;

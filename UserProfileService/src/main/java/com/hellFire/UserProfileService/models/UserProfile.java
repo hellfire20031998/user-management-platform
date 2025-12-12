@@ -1,5 +1,6 @@
 package com.hellFire.UserProfileService.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,11 +13,9 @@ public class UserProfile extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "app_user_id", referencedColumnName = "id")
-    private AppUser appUser;
-
+    private String username;
+    @JsonIgnore
+    private String password;
     private String firstName;
     private String lastName;
     private String email;

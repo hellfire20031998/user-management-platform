@@ -8,5 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
-    Optional<UserProfile> findByAppUser_Id(Long appUserId);
+
+    Optional<UserProfile> findByUsernameAndDeleted(String username, Boolean deleted);
+
+    Optional<UserProfile> findByIdAndDeleted(Long id, Boolean deleted);
 }
