@@ -8,7 +8,6 @@ import com.hellFire.PostService.models.requests.UpdatePostRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.control.MappingControl;
 
 import java.util.List;
 
