@@ -5,7 +5,7 @@ import com.hellFire.PaymentService.paymentGateway.IPaymentGateway;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PaymentService {
+public class PaymentService implements IPaymentService {
 
     private IPaymentGateway paymentGateway;
 
