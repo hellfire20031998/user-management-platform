@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaAuditing
+
 public class UserProfileServiceApplication {
 
 	public static void main(String[] args) {
